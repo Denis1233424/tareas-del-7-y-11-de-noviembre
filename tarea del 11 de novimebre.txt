@@ -1,0 +1,81 @@
+public class Main {
+
+    public static void main(String[] args) {
+        int tablasLargas = 26;
+        int tablasCortas = 33;
+        int ganchosPequenos = 200;
+        int ganchosGrandes = 20;
+        int tornillos = 510;
+
+        Resultado resultado = verificarMateriales(tablasLargas, tablasCortas, ganchosPequenos, ganchosGrandes, tornillos);
+
+        mostrarResultado(resultado);
+    }
+
+    static class Resultado {
+        boolean posible;
+        int tablasFaltantes;
+        int cortasFaltantes;
+        int ganchosPequenosFaltantes;
+        int ganchosGrandesFaltantes;
+        int tornillosFaltantes;
+        int estantesExtras;
+
+        Resultado(boolean posible, int tablasFaltantes, int cortasFaltantes, int ganchosPequenosFaltantes, int ganchosGrandesFaltantes, int tornillosFaltantes, int estantesExtras) {
+            this.posible = posible;
+            this.tablasFaltantes = tablasFaltantes;
+            this.cortasFaltantes = cortasFaltantes;
+            this.ganchosPequenosFaltantes = ganchosPequenosFaltantes;
+            this.ganchosGrandesFaltantes = ganchosGrandesFaltantes;
+            this.tornillosFaltantes = tornillosFaltantes;
+            this.estantesExtras = estantesExtras;
+        }
+    }
+
+    public static Resultado verificarMateriales(int tablasLargas, int tablasCortas, int ganchosPequenos, int ganchosGrandes, int tornillos) {
+        int requeridasTablasLargas = 4 * 15;
+        int requeridasTablasCortas = 6 * 15;
+        int requeridasGanchosPequenos = 12 * 15;
+        int requeridasGanchosGrandes = 2 * 15;
+        int requeridasTornillos = 14 * 15;
+
+        int tablasFaltantes = Math.max(0, requeridasTablasLargas - tablasLargas);
+        int cortasFaltantes = Math.max(0, requeridasTablasCortas - tablasCortas);
+        int ganchosPequenosFaltantes = Math.max(0, requeridasGanchosPequenos - ganchosPequenos);
+        int ganchosGrandesFaltantes = Math.max(0, requeridasGanchosGrandes - ganchosGrandes);
+        int tornillosFaltantes = Math.max(0, requeridasTornillos - tornillos);
+
+        if (tablasFaltantes == 0 && cortasFaltantes == 0 && ganchosPequenosFaltantes == 0 &&
+                ganchosGrandesFaltantes == 0 && tornillosFaltantes == 0) {
+
+            int sobrantesTablasLargas = tablasLargas - requeridasTablasLargas;
+            int sobrantesTablasCortas = tablasCortas - requeridasTablasCortas;
+            int sobrantesGanchosPequenos = ganchosPequenos - requeridasGanchosPequenos;
+            int sobrantesGanchosGrandes = ganchosGrandes - requeridasGanchosGrandes;
+            int sobrantesTornillos = tornillos - requeridasTornillos;
+
+            int estantesExtras = Math.min(
+                Math.min(sobrantesTablasLargas / 4, sobrantesTablasCortas / 6),
+                Math.min(sobrantesGanchosPequenos / 12, Math.min(sobrantesGanchosGrandes / 2, sobrantesTornillos / 14))
+            );
+
+            return new Resultado(true, 0, 0, 0, 0, 0, estantesExtras);
+        } else {
+            return new Resultado(false, tablasFaltantes, cortasFaltantes, ganchosPequenosFaltantes, ganchosGrandesFaltantes, tornillosFaltantes, 0);
+        }
+    }
+
+    public static void mostrarResultado(Resultado resultado) {
+        if (resultado.posible) {
+            System.out.println("Es posible realizar los 15 estantes pedidos");
+            System.out.println("Con el material sobrante puedes construir " + resultado.estantesExtras + " estantes adicionales.");
+        } else {
+            System.out.println("No es posible cubrir el pedido porque faltan:");
+            System.out.println(resultado.tablasFaltantes + " tablas largas");
+            System.out.println(resultado.cortasFaltantes + " tablas cortas");
+            System.out.println(resultado.ganchosPequenosFaltantes + " ganchos pequeños");
+            System.out.println(resultado.ganchosGrandesFaltantes + " ganchos grandes");
+            System.out.println(resultado.tornillosFaltantes + " tornillos");
+        }
+    }
+}

@@ -1,0 +1,48 @@
+
+def obtener_pesos():
+    n = int(input("Ingrese el número de paquetes: "))
+    pesos = []
+    for i in range(n):
+        peso = float(input(f"Ingrese el peso del paquete {i+1} en gramos: "))
+        pesos.append(peso)
+    return pesos
+
+def calcular_costo_individual(pesos):
+    costo_individual = 0
+    for peso in pesos:
+        if peso <= 20:
+            costo_individual += 3.5
+        elif peso <= 50:
+            costo_individual += 4.5
+        elif peso <= 100:
+            costo_individual += 5.8
+        elif peso <= 200:
+            costo_individual += 7
+        elif peso <= 350:
+            costo_individual += 8
+    return costo_individual
+
+def calcular_costo_unico(peso_total):
+    if peso_total <= 20:
+        return 3.5
+    elif peso_total <= 50:
+        return 4.5
+    elif peso_total <= 100:
+        return 5.8
+    elif peso_total <= 200:
+        return 7
+    elif peso_total <= 350:
+        return 8
+
+def main():
+    pesos = obtener_pesos()
+    costo_individual = calcular_costo_individual(pesos)
+    peso_total = sum(pesos)
+    costo_unico = calcular_costo_unico(peso_total)
+
+    if costo_individual < costo_unico:
+        print(f"Es más económico enviar cada paquete por separado. Costo total: {costo_individual} Bs")
+    else:
+        print(f"Es más económico enviar todos los paquetes juntos. Costo total: {costo_unico} Bs")
+
+main()
